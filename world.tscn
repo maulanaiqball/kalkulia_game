@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cosb5fluk0bnn"]
+[gd_scene load_steps=6 format=3 uid="uid://cosb5fluk0bnn"]
 
 [ext_resource type="PackedScene" uid="uid://b1wdioytvhyxh" path="res://Player/character_body_2d.tscn" id="2_fj7yv"]
 [ext_resource type="Texture2D" uid="uid://bgfmbq7nivo68" path="res://Bush.png" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://ct7ph86i7vvtp" path="res://enemy/character_body_2d.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://ds7adcd5x5nbk" path="res://asset/node_2d.tscn" id="4_aqk2v"]
 
 [sub_resource type="GDScript" id="GDScript_tlwt5"]
 script/source = "extends Node2D
@@ -10,14 +12,21 @@ script/source = "extends Node2D
 [node name="world" type="Node2D"]
 script = SubResource("GDScript_tlwt5")
 
-[node name="Player" parent="." instance=ExtResource("2_fj7yv")]
-move_speed = 20.0
-sprint_increase = 1.5
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="Bush" type="Sprite2D" parent="."]
+[node name="Player" parent="YSort" instance=ExtResource("2_fj7yv")]
+
+[node name="Bush" type="Sprite2D" parent="YSort"]
 position = Vector2(40, 24)
 texture = ExtResource("2_tlwt5")
 
-[node name="Bush2" type="Sprite2D" parent="."]
+[node name="Bush2" type="Sprite2D" parent="YSort"]
 position = Vector2(-56, -32)
 texture = ExtResource("2_tlwt5")
+
+[node name="Slime" parent="YSort" instance=ExtResource("3_tlwt5")]
+position = Vector2(88, 32)
+
+[node name="chest" parent="YSort" instance=ExtResource("4_aqk2v")]
+position = Vector2(-64, 26)
