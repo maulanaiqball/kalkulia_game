@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b1wdioytvhyxh" path="res://Player/character_body_2d.tscn" id="2_fj7yv"]
 [ext_resource type="Texture2D" uid="uid://bgfmbq7nivo68" path="res://Bush.png" id="2_tlwt5"]
-[ext_resource type="PackedScene" uid="uid://dheducyi0ijbv" path="res://slime.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://ct7ph86i7vvtp" path="res://enemy/slime.tscn" id="3_tlwt5"]
 
 [sub_resource type="GDScript" id="GDScript_tlwt5"]
 script/source = "extends Node2D
@@ -21,5 +21,5 @@ texture = ExtResource("2_tlwt5")
 position = Vector2(-56, -32)
 texture = ExtResource("2_tlwt5")
 
-[node name="slime" parent="." instance=ExtResource("3_tlwt5")]
-position = Vector2(76, -57)
+[node name="Slime" parent="." instance=ExtResource("3_tlwt5")]
+position = Vector2(80, -24)

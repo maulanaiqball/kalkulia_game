@@ -1,0 +1,96 @@
+[gd_scene load_steps=9 format=3 uid="uid://ct7ph86i7vvtp"]
+
+[ext_resource type="Texture2D" uid="uid://b4phvb7ae5xva" path="res://enemy/slime.png" id="1_2ja8g"]
+[ext_resource type="Script" uid="uid://fdygks0rk4cu" path="res://enemy/slime.gd" id="1_g8ky7"]
+
+[sub_resource type="Animation" id="Animation_5rgn5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_kvalb"]
+resource_name = "slime_idle"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 4, 0, 0, 0, 4]
+}
+
+[sub_resource type="Animation" id="Animation_g8ky7"]
+resource_name = "jump"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3yjg2"]
+_data = {
+&"RESET": SubResource("Animation_5rgn5"),
+&"slime_idle": SubResource("Animation_kvalb"),
+&"slime_jump": SubResource("Animation_g8ky7")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g8ky7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5rgn5"]
+radius = 62.0
+
+[node name="Slime" type="CharacterBody2D"]
+script = ExtResource("1_g8ky7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3yjg2")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2, -8)
+texture = ExtResource("1_2ja8g")
+hframes = 5
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.3, 0.3)
+shape = SubResource("CapsuleShape2D_g8ky7")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, 8)
+shape = SubResource("CircleShape2D_5rgn5")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
