@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://n74f8qllltby"]
+
+[ext_resource type="Texture2D" uid="uid://cmclbil40j03s" path="res://asset/STONE.png" id="1_xgnb6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_33chf"]
+radius = 4.0
+height = 22.0
+
+[node name="stone" type="StaticBody2D"]
+light_mask = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+texture = ExtResource("1_xgnb6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_33chf")

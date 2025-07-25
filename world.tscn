@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://cosb5fluk0bnn"]
+[gd_scene load_steps=11 format=3 uid="uid://cosb5fluk0bnn"]
 
-[ext_resource type="PackedScene" uid="uid://b1wdioytvhyxh" path="res://Player/character_body_2d.tscn" id="2_fj7yv"]
-[ext_resource type="Texture2D" uid="uid://bgfmbq7nivo68" path="res://Bush.png" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://1xxbinfys4uu" path="res://asset/GrassBackground.png" id="1_pkg7o"]
+[ext_resource type="PackedScene" uid="uid://bsobsjlwvfual" path="res://Player/player.tscn" id="2_ioo17"]
+[ext_resource type="PackedScene" uid="uid://bg7sb5ukh2u4c" path="res://asset/bush.tscn" id="3_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://ct7ph86i7vvtp" path="res://enemy/slime.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://ds7adcd5x5nbk" path="res://asset/chest.tscn" id="4_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://dewixonlun88u" path="res://asset/tree.tscn" id="5_036b0"]
+[ext_resource type="PackedScene" uid="uid://ccdl7rja01f3s" path="res://pet/kapibara.tscn" id="6_dwbse"]
+[ext_resource type="PackedScene" uid="uid://n74f8qllltby" path="res://asset/stone.tscn" id="8_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://b67wgilbihl7" path="res://asset/gate.tscn" id="9_ioo17"]
 
 [sub_resource type="GDScript" id="GDScript_tlwt5"]
 script/source = "extends Node2D
@@ -11,15 +17,47 @@ script/source = "extends Node2D
 [node name="world" type="Node2D"]
 script = SubResource("GDScript_tlwt5")
 
-[node name="Player" parent="." instance=ExtResource("2_fj7yv")]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(-1, 0)
+texture = ExtResource("1_pkg7o")
+region_enabled = true
+region_rect = Rect2(-328, -184, 648, 352)
 
-[node name="Bush" type="Sprite2D" parent="."]
-position = Vector2(40, 24)
-texture = ExtResource("2_tlwt5")
+[node name="TileMap" type="TileMap" parent="."]
+format = 2
 
-[node name="Bush2" type="Sprite2D" parent="."]
-position = Vector2(-56, -32)
-texture = ExtResource("2_tlwt5")
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="Slime" parent="." instance=ExtResource("3_tlwt5")]
-position = Vector2(80, -24)
+[node name="Player" parent="YSort" instance=ExtResource("2_ioo17")]
+
+[node name="Slime" parent="YSort" instance=ExtResource("3_tlwt5")]
+position = Vector2(152, -60)
+
+[node name="Slime2" parent="YSort" instance=ExtResource("3_tlwt5")]
+position = Vector2(-56, 64)
+
+[node name="bush" parent="YSort" instance=ExtResource("3_aqk2v")]
+position = Vector2(-40, -32)
+
+[node name="bush2" parent="YSort" instance=ExtResource("3_aqk2v")]
+position = Vector2(24, 40)
+
+[node name="chest" parent="YSort" instance=ExtResource("4_aqk2v")]
+position = Vector2(-96, -40)
+
+[node name="tree" parent="YSort" instance=ExtResource("5_036b0")]
+position = Vector2(8, -72)
+
+[node name="tree2" parent="YSort" instance=ExtResource("5_036b0")]
+position = Vector2(-144, -24)
+
+[node name="kapibara" parent="YSort" instance=ExtResource("6_dwbse")]
+position = Vector2(32, -32)
+
+[node name="StaticBody2D" parent="YSort" instance=ExtResource("8_gbfbk")]
+position = Vector2(64, -48)
+
+[node name="StaticBody2D2" parent="YSort" instance=ExtResource("9_ioo17")]
+position = Vector2(56, 32)
