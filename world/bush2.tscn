@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://6y2h6ugmb600"]
+
+[ext_resource type="Texture2D" uid="uid://dvop7hrgb41yg" path="res://world/bush2.png" id="1_0exhi"]
+[ext_resource type="Texture2D" uid="uid://bt2d5u2tgd0o5" path="res://shadows/large_shadow.png" id="2_f44ke"]
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+texture = ExtResource("1_0exhi")
+
+[node name="ShadowSprite2D2" type="Sprite2D" parent="."]
+show_behind_parent = true
+position = Vector2(0, 2)
+texture = ExtResource("2_f44ke")

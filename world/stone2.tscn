@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4g32t2ml2bvv"]
+
+[ext_resource type="Texture2D" uid="uid://85kiypfufue8" path="res://world/stone3.png" id="1_4tuyc"]
+[ext_resource type="Texture2D" uid="uid://bt2d5u2tgd0o5" path="res://shadows/large_shadow.png" id="2_l60lm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l60lm"]
+radius = 3.0
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -9)
+texture = ExtResource("1_4tuyc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_l60lm")
+
+[node name="ShadowSprite2D2" type="Sprite2D" parent="."]
+show_behind_parent = true
+position = Vector2(0, -1)
+texture = ExtResource("2_l60lm")
