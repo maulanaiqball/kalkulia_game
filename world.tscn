@@ -1,15 +1,17 @@
-[gd_scene load_steps=11 format=4 uid="uid://c6voj8psa80tg"]
+[gd_scene load_steps=13 format=4 uid="uid://c6voj8psa80tg"]
 
 [ext_resource type="PackedScene" uid="uid://vrjqw2e4onkj" path="res://player/player.tscn" id="1_f3sb7"]
 [ext_resource type="Texture2D" uid="uid://kgpim4yk6ppj" path="res://world/grass_background.png" id="1_fj7yv"]
 [ext_resource type="TileSet" uid="uid://dk2cmv26yac3g" path="res://world/dirt_tileset.tres" id="2_dwbse"]
 [ext_resource type="TileSet" uid="uid://djcgnc0u1jb52" path="res://world/cliff_tileset.tres" id="3_dwbse"]
+[ext_resource type="PackedScene" uid="uid://5yl37yh2eivx" path="res://enemies/mini_slime.tscn" id="6_ic0uy"]
 [ext_resource type="PackedScene" uid="uid://dvi7va8hku2sn" path="res://world/grass.tscn" id="7_pkg7o"]
 [ext_resource type="PackedScene" uid="uid://bth14i0usvwsd" path="res://enemies/bat_enemy.tscn" id="8_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://bbk3dg083tw3i" path="res://world/tree2.tscn" id="9_ioo17"]
 [ext_resource type="PackedScene" uid="uid://diolhckvf8glp" path="res://world/stone.tscn" id="10_wse8f"]
 [ext_resource type="PackedScene" uid="uid://c4g32t2ml2bvv" path="res://world/stone2.tscn" id="11_ic0uy"]
 [ext_resource type="PackedScene" uid="uid://6y2h6ugmb600" path="res://world/bush2.tscn" id="11_k3n1d"]
+[ext_resource type="PackedScene" uid="uid://bw6t12lcnjd2u" path="res://asset/chest.tscn" id="12_k3n1d"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -274,11 +276,14 @@ position = Vector2(256, 72)
 [node name="Grass12" parent="." instance=ExtResource("7_pkg7o")]
 position = Vector2(272, 96)
 
+[node name="mini_slime" parent="." instance=ExtResource("6_ic0uy")]
+position = Vector2(336, -80)
+
 [node name="BatEnemy" parent="." instance=ExtResource("8_gbfbk")]
-position = Vector2(32, 112)
+position = Vector2(-40, 136)
 
 [node name="BatEnemy2" parent="." instance=ExtResource("8_gbfbk")]
-position = Vector2(288, 184)
+position = Vector2(432, 168)
 
 [node name="StaticBody2D" parent="." instance=ExtResource("9_ioo17")]
 position = Vector2(320, 152)
@@ -579,3 +584,6 @@ position = Vector2(472, 0)
 
 [node name="StaticBody2D91" parent="." instance=ExtResource("11_k3n1d")]
 position = Vector2(440, -120)
+
+[node name="chest" parent="." instance=ExtResource("12_k3n1d")]
+position = Vector2(152, 168)

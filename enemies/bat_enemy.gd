@@ -1,8 +1,7 @@
 extends CharacterBody2D
 
-const SPEED = 30
-const FRICTION = 500
-
+@export var FRICTION = 500
+@export var SPEED = 30
 @export var min_range: = 4
 @export var max_range: = 128
 @export var stats: Stats

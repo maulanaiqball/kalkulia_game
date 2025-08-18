@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bw6t12lcnjd2u"]
+
+[ext_resource type="Texture2D" uid="uid://d0u4at5nhonul" path="res://asset/chest.png" id="1_2wuah"]
+[ext_resource type="Script" uid="uid://ctklutnio7uqn" path="res://asset/chest.gd" id="1_uf5rl"]
+[ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="2_abka0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uf5rl"]
+radius = 5.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uf5rl"]
+size = Vector2(35.5, 33.5)
+
+[node name="chest" type="Area2D"]
+script = ExtResource("1_uf5rl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -10)
+texture = ExtResource("1_2wuah")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_uf5rl")
+
+[node name="interaction_area" parent="." instance=ExtResource("2_abka0")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_uf5rl")
