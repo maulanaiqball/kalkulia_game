@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgc40t1nbwcef"]
+
+[ext_resource type="Script" uid="uid://dc4app0skcybr" path="res://puzzle/gate.gd" id="1_t0t5c"]
+[ext_resource type="Texture2D" uid="uid://cwbblrux6fsi7" path="res://world/GATE..png" id="2_t0t5c"]
+[ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="3_2v5s7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uf5rl"]
+radius = 2.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uf5rl"]
+size = Vector2(35.5, 33.5)
+
+[node name="gate" type="StaticBody2D"]
+collision_mask = 2
+script = ExtResource("1_t0t5c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("2_t0t5c")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_uf5rl")
+
+[node name="interaction_area" parent="." instance=ExtResource("3_2v5s7")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_uf5rl")
+
+[node name="EmptyLabel" type="Label" parent="."]
+visible = false
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
