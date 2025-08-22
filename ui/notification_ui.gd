@@ -1,13 +1,6 @@
 extends CanvasLayer
 
 @onready var container: VBoxContainer = $VBoxContainer
-#@onready var inventory_ui = $InventoryUI
-#
-#func _input(event):
-	#if event.is_action_pressed("inventory"):
-		#inventory_ui.visible = !inventory_ui.visible
-		#if inventory_ui.visible:
-			#inventory_ui.update_ui()
 
 func show_message(text: String, duration: float = 2.0):
 	var label = Label.new()

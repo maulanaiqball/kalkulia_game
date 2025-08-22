@@ -52,3 +52,7 @@ func _countify(arr: Array[int]) -> Dictionary:
 	for n in arr:
 		d[n] = d.get(n, 0) + 1
 	return d
+
+func clear_all() -> void:
+	items.clear()
+	print("Inventory dikosongkan:", items)

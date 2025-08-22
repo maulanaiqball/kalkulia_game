@@ -14,34 +14,50 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -33.0
+offset_right = 86.0
+offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="TitleLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SlotsContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
+alignment = 1
+
+[node name="OptionsBar" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
 
 [node name="ButtonsBar" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="ResetButton" type="Button" parent="Panel/VBoxContainer/ButtonsBar"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Reset"
+icon_alignment = 1
+expand_icon = true
 
 [node name="CloseButton" type="Button" parent="Panel/VBoxContainer/ButtonsBar"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Close"
 
-[node name="NumberPopup" type="PopupPanel" parent="."]
-
-[node name="ScrollContainer" type="ScrollContainer" parent="NumberPopup"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 96.0
-offset_bottom = 96.0
-
-[node name="OptionsContainer" type="VBoxContainer" parent="NumberPopup/ScrollContainer"]
+[node name="SubmitButton" type="Button" parent="Panel/VBoxContainer/ButtonsBar"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Submit"

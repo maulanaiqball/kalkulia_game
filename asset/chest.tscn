@@ -1,12 +1,87 @@
-[gd_scene load_steps=6 format=3 uid="uid://bw6t12lcnjd2u"]
+[gd_scene load_steps=12 format=3 uid="uid://bw6t12lcnjd2u"]
 
 [ext_resource type="Texture2D" uid="uid://d0u4at5nhonul" path="res://asset/chest.png" id="1_2wuah"]
 [ext_resource type="Script" uid="uid://ctklutnio7uqn" path="res://asset/chest.gd" id="1_uf5rl"]
 [ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="2_abka0"]
+[ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="2_fvqhk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uf5rl"]
 radius = 2.0
 height = 16.0
+
+[sub_resource type="Animation" id="Animation_fvqhk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_uf5rl"]
+resource_name = "chest_animation"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_4402x"]
+resource_name = "chest_close"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_y1ihj"]
+resource_name = "chest_open"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4402x"]
+_data = {
+&"RESET": SubResource("Animation_fvqhk"),
+&"chest_animation": SubResource("Animation_uf5rl"),
+&"chest_close": SubResource("Animation_4402x"),
+&"chest_open": SubResource("Animation_y1ihj")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uf5rl"]
 size = Vector2(35.5, 33.5)
@@ -14,6 +89,10 @@ size = Vector2(35.5, 33.5)
 [node name="chest" type="StaticBody2D"]
 collision_mask = 2
 script = ExtResource("1_uf5rl")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_fvqhk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -10)
@@ -24,6 +103,11 @@ hframes = 4
 position = Vector2(0, -2)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_uf5rl")
+
+[node name="animation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4402x")
+}
 
 [node name="interaction_area" parent="." instance=ExtResource("2_abka0")]
 

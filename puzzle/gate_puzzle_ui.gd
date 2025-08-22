@@ -4,39 +4,30 @@ signal puzzle_solved(gate: Node)
 @onready var panel: Panel = $Panel
 @onready var title_label: Label = $Panel/VBoxContainer/TitleLabel
 @onready var slots_container: HBoxContainer = $Panel/VBoxContainer/SlotsContainer
+@onready var options_bar: HBoxContainer = $Panel/VBoxContainer/OptionsBar
 @onready var reset_button: Button = $Panel/VBoxContainer/ButtonsBar/ResetButton
 @onready var close_button: Button = $Panel/VBoxContainer/ButtonsBar/CloseButton
+@onready var submit_button: Button = $Panel/VBoxContainer/ButtonsBar/SubmitButton
 
-@onready var number_popup: PopupPanel = $NumberPopup
-@onready var options_container: VBoxContainer = $NumberPopup/ScrollContainer/OptionsContainer
-
-var required_numbers: Array[int] = []   # contoh: [1,3,4]
-var pool_counts: Dictionary = {}         # {angka: sisa_boleh_dipakai}
-var slots: Array[Button] = []            # tombol slot
-var slot_values: Array = []              # nilai pada tiap slot (null/int)
-var current_slot_index: int = -1
-var target_gate: Node = null             # gate yang sedang aktif puzzle-nya
+var required_numbers: Array[int] = []
+var pool_counts: Dictionary = {}        # {angka: sisa_boleh_dipakai}
+var slots: Array[Button] = []           # tombol slot
+var slot_values: Array = []             # nilai tiap slot (null/int)
+var target_gate: Node = null
 
 func _ready() -> void:
 	visible = false
 	reset_button.pressed.connect(_on_reset_pressed)
 	close_button.pressed.connect(_on_close_pressed)
+	submit_button.pressed.connect(_on_submit_pressed)
 
 func open(required: Array[int], gate: Node) -> void:
 	target_gate = gate
 	required_numbers = required.duplicate()
-	# pastikan player punya angka2 yang dibutuhkan
-	if not Inventory_Manager.has_numbers(required_numbers):
-		if Engine.has_singleton("NotificationUi"):
-			NotificationUi.show_message("Angka belum lengkap!")
-		return
-
-	# siapkan pool dari inventory, dibatasi required
 	pool_counts = Inventory_Manager.get_pool_for(required_numbers)
-
-	# bangun slot sesuai jumlah required
 	_build_slots(required_numbers.size())
 	_clear_slots()
+	_build_options()
 
 	title_label.text = "Susun angka dari kecil ke besar"
 	show()
@@ -51,115 +42,104 @@ func _build_slots(count: int) -> void:
 
 	for i in range(count):
 		var btn := Button.new()
-		btn.text = "_"
-		btn.focus_mode = Control.FOCUS_ALL
-		btn.pressed.connect(_on_slot_pressed.bind(i))
-		btn.custom_minimum_size = Vector2(64, 48)
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.custom_minimum_size = Vector2(32, 32)
+
+		# background pakai gambar
+		var stylebox := StyleBoxTexture.new()
+		stylebox.texture = load("res://drop_item/drop_item.png")
+		btn.add_theme_stylebox_override("normal", stylebox)
+		btn.add_theme_stylebox_override("hover", stylebox)
+		btn.add_theme_stylebox_override("pressed", stylebox)
+
+		# slot kosong = gelap
+		btn.modulate = Color(1, 1, 1, 0.5)
+
 		slots_container.add_child(btn)
 		slots.append(btn)
 		slot_values.append(null)
 
+func _build_options() -> void:
+	for c in options_bar.get_children():
+		c.queue_free()
+
+	var keys := pool_counts.keys()
+	keys.shuffle()
+	for num in keys:
+		var btn := Button.new()
+		btn.text = str(num)               
+		btn.custom_minimum_size = Vector2(32, 32)
+
+		var stylebox := StyleBoxTexture.new()
+		stylebox.texture = load("res://drop_item/drop_item.png")
+		btn.add_theme_stylebox_override("normal", stylebox)
+		btn.add_theme_stylebox_override("hover", stylebox)
+		btn.add_theme_stylebox_override("pressed", stylebox)
+
+		btn.disabled = pool_counts.get(num, 0) <= 0
+		btn.pressed.connect(_on_number_chosen.bind(num))
+		options_bar.add_child(btn)
+
 func _clear_slots() -> void:
-	# reset nilai slot & restore pool
 	for i in range(slot_values.size()):
 		slot_values[i] = null
 	for b in slots:
-		b.text = "_"
-
-	# pool_counts sudah benar dari open(); tidak perlu diubah disini
-
-func _on_slot_pressed(index: int) -> void:
-	current_slot_index = index
-	_show_number_popup()
-
-func _show_number_popup() -> void:
-	# bersihkan opsi
-	for c in options_container.get_children():
-		c.queue_free()
-
-	# buat tombol pilihan berdasarkan pool_counts (urutkan tampilannya)
-	var keys := pool_counts.keys()
-	keys.sort()
-	for num in keys:
-		var btn := Button.new()
-		btn.text = str(num) + " (x" + str(pool_counts[num]) + ")"
-		btn.disabled = pool_counts[num] <= 0
-		btn.pressed.connect(_on_number_chosen.bind(num))
-		options_container.add_child(btn)
-
-	# tambah tombol hapus (clear) slot
-	var clear_btn := Button.new()
-	clear_btn.text = "Kosongkan Slot"
-	clear_btn.pressed.connect(_on_clear_slot)
-	options_container.add_child(clear_btn)
-
-	number_popup.popup_centered()
+		b.text = "-"
+		b.modulate = Color(1, 1, 1, 0.5)  # kosong = gelap
 
 func _on_number_chosen(num: int) -> void:
-	if current_slot_index < 0:
-		number_popup.hide()
+	# cari slot kosong pertama (auto isi kiri -> kanan)
+	var empty_index := slot_values.find(null)
+	if empty_index == -1:
+		NotificationUi.show_message("Semua slot sudah terisi!")
 		return
 
-	# kembalikan angka lama ke pool (jika slot sudah terisi)
-	var prev = slot_values[current_slot_index]
-	if prev != null:
-		pool_counts[prev] += 1
+	# pastikan stok angka tersedia
+	if pool_counts.get(num, 0) <= 0:
+		return
 
-	# ambil angka baru dari pool jika tersedia
-	if pool_counts.get(num, 0) > 0:
-		pool_counts[num] -= 1
-		slot_values[current_slot_index] = num
-		slots[current_slot_index].text = str(num)
+	# isi slot
+	pool_counts[num] -= 1
+	slot_values[empty_index] = num
+	var btn := slots[empty_index]
+	btn.text = str(num)
+	btn.modulate = Color(1, 1, 1, 1.0)  # terisi = normal
 
-	number_popup.hide()
-	current_slot_index = -1
-
-	_try_check_solved()
-
-func _on_clear_slot() -> void:
-	if current_slot_index >= 0:
-		var prev = slot_values[current_slot_index]
-		if prev != null:
-			pool_counts[prev] += 1
-			slot_values[current_slot_index] = null
-			slots[current_slot_index].text = "_"
-	number_popup.hide()
-	current_slot_index = -1
+	# refresh tampilan opsi (update jumlah & disable)
+	_build_options()
 
 func _on_reset_pressed() -> void:
-	# reset semua slot & kembalikan pool penuh berdasarkan required
 	pool_counts = Inventory_Manager.get_pool_for(required_numbers)
 	_clear_slots()
+	_build_options()
 
 func _on_close_pressed() -> void:
 	hide()
-	# optional: bersihkan state
 	required_numbers.clear()
 	pool_counts.clear()
 	slots.clear()
 	slot_values.clear()
-	current_slot_index = -1
 	target_gate = null
+	# bersihkan opsi juga
+	for c in options_bar.get_children():
+		c.queue_free()
 
-func _try_check_solved() -> void:
-	# cek apakah semua slot terisi
+func _on_submit_pressed() -> void:
+	# cek semua slot terisi
 	for v in slot_values:
 		if v == null:
+			NotificationUi.show_message("Isi semua slot dulu!")
 			return
 
-	# cek apakah urut (ascending) dan cocok dengan multiset required
+	# cek ascending
 	var chosen := slot_values.duplicate()
 	var chosen_sorted := chosen.duplicate(); chosen_sorted.sort()
 
 	var required_sorted := required_numbers.duplicate(); required_sorted.sort()
 
 	if chosen == required_sorted:
-		# benar dan urut
-		if Engine.has_singleton("NotificationUi"):
-			NotificationUi.show_message("Benar! Gerbang terbuka ✨")
+		NotificationUi.show_message("Benar! Gerbang terbuka ✨")
 		emit_signal("puzzle_solved", target_gate)
 		_on_close_pressed()
 	else:
-		# pilihan lengkap tapi salah urutan/angka
-		if Engine.has_singleton("NotificationUi"):
-			NotificationUi.show_message("Urutan/angka salah. Coba lagi!")
+		NotificationUi.show_message("Urutan/angka salah. Coba lagi!")
