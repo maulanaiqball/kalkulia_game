@@ -1,0 +1,102 @@
+[gd_scene load_steps=12 format=3 uid="uid://uy5tkh8abd7h"]
+
+[ext_resource type="Texture2D" uid="uid://blwiqjas1wr3a" path="res://npc/npc1.png" id="1_2xp5l"]
+[ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="1_nhy3c"]
+[ext_resource type="Script" uid="uid://dbhklxw1o25c5" path="res://npc/npc.gd" id="1_o6cys"]
+[ext_resource type="Texture2D" uid="uid://hfsjwbq862at" path="res://drop_item/drop_item.png" id="2_ldo70"]
+[ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="3_3i1kj"]
+
+[sub_resource type="Animation" id="Animation_3i1kj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_nhy3c"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 0, 0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_o6cys"]
+resource_name = "success"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ldo70"]
+_data = {
+&"RESET": SubResource("Animation_3i1kj"),
+&"idle": SubResource("Animation_nhy3c"),
+&"success": SubResource("Animation_o6cys")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2xp5l"]
+radius = 3.0
+height = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6cys"]
+size = Vector2(35.5, 33.5)
+
+[node name="npc" type="StaticBody2D"]
+script = ExtResource("1_o6cys")
+reward_icon = ExtResource("2_ldo70")
+
+[node name="shadow" type="Sprite2D" parent="."]
+position = Vector2(0, 4)
+texture = ExtResource("1_nhy3c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -7)
+texture = ExtResource("1_2xp5l")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_ldo70")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_2xp5l")
+
+[node name="interaction_area" parent="." instance=ExtResource("3_3i1kj")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_o6cys")

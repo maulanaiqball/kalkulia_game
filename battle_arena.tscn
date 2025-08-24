@@ -1,0 +1,125 @@
+[gd_scene load_steps=10 format=4 uid="uid://cummntpikfrmc"]
+
+[ext_resource type="Texture2D" uid="uid://xub6u3s36me5" path="res://player/Player.png" id="1_1o8xg"]
+[ext_resource type="Script" uid="uid://b61gvhudkdgt8" path="res://battle_arena.gd" id="1_7p3g2"]
+[ext_resource type="Texture2D" uid="uid://kgpim4yk6ppj" path="res://world/grass_background.png" id="2_d7lnp"]
+[ext_resource type="TileSet" uid="uid://dk2cmv26yac3g" path="res://world/dirt_tileset.tres" id="3_wvkhc"]
+[ext_resource type="Texture2D" uid="uid://c4kldwllvl6os" path="res://enemies/slime3.png" id="4_a16jg"]
+[ext_resource type="TileSet" uid="uid://djcgnc0u1jb52" path="res://world/cliff_tileset.tres" id="4_roc78"]
+[ext_resource type="Script" uid="uid://ba47nxpter01f" path="res://batle/boss.gd" id="5_7p3g2"]
+
+[sub_resource type="GDScript" id="GDScript_a16jg"]
+script/source = "# res://batle/player-batle.gd
+extends CharacterBody2D
+
+@export var max_health: int = 3
+var health: int = 3
+
+@onready var fire_point: Node2D = $fire_point
+
+func _ready():
+	add_to_group(\"player\")
+	health = max_health
+
+func apply_damage(amount: int, source: String) -> void:
+	if source == \"player\":
+		return # abaikan peluru sendiri
+
+	health -= amount
+	print(\"Player kena hit! Sisa nyawa:\", health)
+	if health <= 0:
+		print(\"Game Over! Player kalah\")
+		queue_free()
+
+# dipanggil dari quiz saat jawaban benar
+func shoot(target: Node2D = null):
+	var bullet_scene = preload(\"res://batle/bullet.tscn\")
+	var bullet = bullet_scene.instantiate()
+
+	var dir = Vector2.RIGHT
+	if target:
+		dir = (target.global_position - fire_point.global_position).normalized()
+
+	bullet.global_position = fire_point.global_position
+	bullet.setup(\"player\", dir, 1)
+
+	get_tree().current_scene.add_child(bullet)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8xg"]
+size = Vector2(20, 26)
+
+[node name="BattleArena" type="Node2D"]
+script = ExtResource("1_7p3g2")
+
+[node name="GroundLayer" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Parallax2D" type="Parallax2D" parent="GroundLayer"]
+repeat_size = Vector2(320, 192)
+
+[node name="GrassBackground" type="TextureRect" parent="GroundLayer/Parallax2D"]
+offset_right = 320.0
+offset_bottom = 192.0
+texture = ExtResource("2_d7lnp")
+stretch_mode = 1
+
+[node name="DirtTileMapLayer" type="TileMapLayer" parent="GroundLayer"]
+tile_map_data = PackedByteArray("AAD4/wgAAAADAAMAAAD5/wcAAAAAAAMAAAD6/wcAAAAHAAAAAAD6/wgAAAAEAAMAAAD7/wgAAAABAAMAAAD8/wgAAAACAAMAAAD9/wcAAAAAAAMAAAD+/wcAAAABAAMAAAD//wcAAAABAAMAAAAAAAcAAAABAAMAAAABAAcAAAABAAMAAAACAAcAAAABAAMAAAADAAcAAAACAAMAAAAEAAgAAAADAAMAAAAGAAgAAAADAAMAAAAGAAYAAAADAAMAAAANAAYAAAAGAAIAAAANAAUAAAAAAAEAAAANAAQAAAAAAAAAAAAOAAQAAAABAAAAAAAPAAQAAAABAAAAAAAQAAQAAAACAAAAAAAQAAUAAAAFAAIAAAARAAUAAAACAAAAAAARAAYAAAACAAIAAAAQAAYAAAAFAAEAAAAPAAcAAAABAAIAAAAOAAcAAAAIAAEAAAAOAAYAAAABAAEAAAAOAAUAAAABAAEAAAAPAAUAAAABAAEAAAAPAAYAAAABAAEAAAAQAAcAAAACAAIAAAAOAAgAAAADAAIAAAANAAcAAAABAAIAAAAMAAcAAAAGAAMAAAALAAcAAAABAAMAAAAKAAcAAAAFAAMAAAAJAAcAAAAGAAMAAAAIAAcAAAABAAMAAAAIAAUAAAADAAMAAAAJAAYAAAAAAAAAAAAKAAYAAAACAAAAAAAHAAcAAAAAAAMAAAAMAAYAAAAAAAAAAAA=")
+tile_set = ExtResource("3_wvkhc")
+
+[node name="CliffTileMapLayer" type="TileMapLayer" parent="GroundLayer"]
+tile_map_data = PackedByteArray("AAAAAAUAAAABAAMAAAAJAAUAAAABAAMAAAABAAUAAAABAAMAAAACAAUAAAABAAMAAAADAAUAAAABAAMAAAAEAAUAAAABAAMAAAAFAAUAAAABAAMAAAAGAAUAAAABAAMAAAAHAAUAAAABAAMAAAAIAAUAAAABAAMAAAD//wUAAAABAAMAAAD+/wUAAAABAAMAAAD9/wUAAAABAAMAAAD8/wUAAAAAAAMAAAD9/wIAAAABAAMAAAD+/wIAAAAHAAMAAAD+/wEAAAAEAAAAAAD//wEAAAABAAMAAAAAAAEAAAAHAAMAAAAAAAAAAAAEAAAAAAABAAAAAAABAAMAAAACAAAAAAABAAMAAAADAAAAAAAHAAMAAAADAP//AAAEAAAAAAAEAP//AAABAAMAAAAFAP//AAABAAMAAAAGAP//AAABAAMAAAAHAP//AAABAAMAAAAIAP//AAABAAMAAAAJAP//AAAHAAAAAAAJAAAAAAAEAAMAAAAKAAAAAAABAAMAAAALAAAAAAAHAAAAAAALAAEAAAADAAEAAAALAAIAAAAEAAMAAAAMAAIAAAAHAAAAAAAMAAMAAAADAAEAAAAMAAQAAAAHAAMAAAALAAQAAAABAAMAAAAKAAQAAAAEAAAAAAAKAAUAAAAHAAMAAAD8/wEAAAADAAEAAAD8/wAAAAADAAAAAAD8/wIAAAAEAAMAAAA=")
+tile_set = ExtResource("4_roc78")
+
+[node name="player" type="CharacterBody2D" parent="."]
+position = Vector2(47, 91)
+script = SubResource("GDScript_a16jg")
+
+[node name="Sprite2D" type="Sprite2D" parent="player"]
+texture = ExtResource("1_1o8xg")
+hframes = 60
+
+[node name="fire_point" type="Marker2D" parent="player"]
+position = Vector2(14, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_1o8xg")
+
+[node name="boss" type="CharacterBody2D" parent="."]
+position = Vector2(247, 93)
+script = ExtResource("5_7p3g2")
+
+[node name="Sprite2D" type="Sprite2D" parent="boss"]
+texture = ExtResource("4_a16jg")
+hframes = 5
+
+[node name="fire_point" type="Marker2D" parent="boss"]
+position = Vector2(-16, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boss"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_1o8xg")
+
+[node name="QuizUI" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="QuizUI"]
+offset_left = 113.0
+offset_right = 153.0
+offset_bottom = 40.0
+
+[node name="QuestionLabel" type="Label" parent="QuizUI/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="OptionsBox" type="HBoxContainer" parent="QuizUI/Panel"]
+layout_mode = 0
+offset_left = -113.0
+offset_top = 140.0
+offset_right = -73.0
+offset_bottom = 180.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 91)

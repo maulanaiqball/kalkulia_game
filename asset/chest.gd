@@ -8,7 +8,7 @@ var loot_item_texture: Texture2D = preload("res://drop_item/drop_item.png")
 var loot_ui_instance: Node = null
 var loot_item_amount: int = 0
 var is_empty: bool = false
-var is_opened: bool = false   # untuk cek apakah chest sudah terbuka
+var is_opened: bool = false
 
 func _ready() -> void:
 	interaction_area.interact = Callable(self, "_on_interact")

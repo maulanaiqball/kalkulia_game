@@ -49,4 +49,4 @@ func _open_gate() -> void:
 	Inventory_Manager.clear_all()
 
 	await get_tree().create_timer(0.6).timeout
-	get_tree().change_scene_to_file("res://world2.tscn")
+	get_tree().change_scene_to_file("res://battle_arena.tscn")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://c6voj8psa80tg"]
+[gd_scene load_steps=15 format=4 uid="uid://c6voj8psa80tg"]
 
 [ext_resource type="PackedScene" uid="uid://vrjqw2e4onkj" path="res://player/player.tscn" id="1_f3sb7"]
 [ext_resource type="Texture2D" uid="uid://kgpim4yk6ppj" path="res://world/grass_background.png" id="1_fj7yv"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://6y2h6ugmb600" path="res://world/bush2.tscn" id="11_k3n1d"]
 [ext_resource type="PackedScene" uid="uid://bw6t12lcnjd2u" path="res://asset/chest.tscn" id="12_k3n1d"]
 [ext_resource type="PackedScene" uid="uid://dgc40t1nbwcef" path="res://asset/gate.tscn" id="13_2o6r5"]
+[ext_resource type="PackedScene" uid="uid://uy5tkh8abd7h" path="res://npc/npc.tscn" id="14_70uel"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -777,3 +778,6 @@ position = Vector2(640, 216)
 
 [node name="gate" parent="." instance=ExtResource("13_2o6r5")]
 position = Vector2(1216, 32)
+
+[node name="npc" parent="." instance=ExtResource("14_70uel")]
+position = Vector2(176, 120)

@@ -21,6 +21,7 @@ interaction_manager="*res://interaction/interaction_manager.tscn"
 Inventory_Manager="*res://inventory/InventoryManager.tscn"
 NotificationUi="*res://ui/NotificationUI.tscn"
 GatePuzzleUi="*res://puzzle/GatePuzzleUI.tscn"
+QuizUi="*res://npc/quiz_ui.tscn"
 
 [display]
 
