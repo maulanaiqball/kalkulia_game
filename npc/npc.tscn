@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://uy5tkh8abd7h"]
+[gd_scene load_steps=13 format=3 uid="uid://uy5tkh8abd7h"]
 
 [ext_resource type="Texture2D" uid="uid://blwiqjas1wr3a" path="res://npc/npc1.png" id="1_2xp5l"]
 [ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="1_nhy3c"]
 [ext_resource type="Script" uid="uid://dbhklxw1o25c5" path="res://npc/npc.gd" id="1_o6cys"]
 [ext_resource type="Texture2D" uid="uid://hfsjwbq862at" path="res://drop_item/drop_item.png" id="2_ldo70"]
 [ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="3_3i1kj"]
+[ext_resource type="AudioStream" uid="uid://cyjhlmeb8mdln" path="res://music_and_sounds/popUpUi.mp3" id="6_fnhme"]
 
 [sub_resource type="Animation" id="Animation_3i1kj"]
 length = 0.001
@@ -100,3 +101,6 @@ shape = SubResource("CapsuleShape2D_2xp5l")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
 position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_o6cys")
+
+[node name="LootSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fnhme")

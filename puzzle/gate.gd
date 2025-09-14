@@ -6,7 +6,10 @@ extends StaticBody2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 
 # jumlah minimal angka yang harus dimiliki player
-@export var min_numbers: int = 3
+@export var min_numbers: int = 4
+
+# Scene tujuan yang bisa diatur lewat Inspector
+@export_file("*.tscn") var target_scene: String
 
 var is_open := false
 
@@ -39,7 +42,6 @@ func _open_gate() -> void:
 	is_open = true
 
 	anim_player.play("gate_open")
-
 	await anim_player.animation_finished
 
 	if collision:
@@ -49,4 +51,8 @@ func _open_gate() -> void:
 	Inventory_Manager.clear_all()
 
 	await get_tree().create_timer(0.6).timeout
-	get_tree().change_scene_to_file("res://battle_arena.tscn")
+
+	if target_scene != "":
+		get_tree().change_scene_to_file(target_scene)
+	else:
+		push_error("Target scene belum diatur di Inspector untuk gate ini!")

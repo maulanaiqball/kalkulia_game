@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c2o3327362qaw"
+path="res://.godot/imported/Magic Sound Effects - 2MirrorsDialogue.mp3-f10abdc24b1f45d87732047562c65c65.mp3str"
+
+[deps]
+
+source_file="res://music_and_sounds/Magic Sound Effects - 2MirrorsDialogue.mp3"
+dest_files=["res://.godot/imported/Magic Sound Effects - 2MirrorsDialogue.mp3-f10abdc24b1f45d87732047562c65c65.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

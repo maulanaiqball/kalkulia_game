@@ -12,11 +12,11 @@ extends CharacterBody2D
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var hurtbox: Hurtbox = $Hurtbox
 
-
 func _ready() -> void:
 	stats = stats.duplicate()
 	hurtbox.hurt.connect(take_hit.call_deferred)
-	stats.no_health.connect(queue_free)
+	# ganti queue_free → ke fungsi die
+	stats.no_health.connect(die)
 
 func _physics_process(delta: float) -> void:
 	var state = playback.get_current_node()
@@ -34,10 +34,28 @@ func _physics_process(delta: float) -> void:
 			velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 			move_and_slide()
 
+# potongan di enemy.gd kamu
 func take_hit(other_hitbox: Hitbox) -> void:
 	stats.health -= other_hitbox.damage
 	velocity = other_hitbox.knockback_direction * other_hitbox.knockback_amount
 	playback.start("HitState")
+	if stats.health <= 0:
+		die()
+
+func die() -> void:
+	# spawn efek kematian
+	var death_scene: PackedScene = preload("res://effects/enemy_death_effect.tscn")
+	var eff = death_scene.instantiate()
+	eff.global_position = global_position
+	# (opsional) atur z-index agar selalu di atas:
+	if eff.has_method("set_z_index"):
+		eff.z_index = z_index + 10
+	get_tree().current_scene.add_child(eff)
+
+	# bersihkan enemy
+	queue_free()
+
+
 
 func get_player() -> Player:
 	return get_tree().get_first_node_in_group("player")
@@ -57,4 +75,3 @@ func can_see_player() -> bool:
 	ray_cast_2d.target_position = player.global_position - global_position
 	var has_los_to_player: = not ray_cast_2d.is_colliding()
 	return has_los_to_player
-	

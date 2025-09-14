@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddo47f38ulwyw"]
+
+[ext_resource type="Script" uid="uid://bjuehg7w0pst4" path="res://joystik/addons/joystick_addon/joystick.gd" id="1_rnagb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ccjgu"]
+radius = 300.0
+
+[node name="Joystick" type="Node2D"]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_rnagb")
+
+[node name="TouchBtn" type="TouchScreenButton" parent="."]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_ccjgu")
+passby_press = true
+
+[node name="InitPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+gizmo_extents = 211.5
+
+[connection signal="pressed" from="TouchBtn" to="." method="_on_touch_btn_pressed"]
+[connection signal="released" from="TouchBtn" to="." method="_on_touch_btn_released"]

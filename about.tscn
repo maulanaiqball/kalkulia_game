@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://duw58tc8qnguc"]
+
+[ext_resource type="Script" uid="uid://bukuolugc8srm" path="res://button_area.gd" id="1_pp48r"]
+[ext_resource type="Texture2D" uid="uid://loddfuu3y6qw" path="res://asset/buttons.png" id="2_k56y8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6umi"]
+size = Vector2(140, 20)
+
+[node name="About" type="CanvasLayer"]
+layer = 102
+
+[node name="back" type="Area2D" parent="."]
+position = Vector2(166, 116)
+script = ExtResource("1_pp48r")
+target_scene = "uid://dapyke1q7uuet"
+
+[node name="Sprite2D" type="Sprite2D" parent="back"]
+texture = ExtResource("2_k56y8")
+
+[node name="Label" type="Label" parent="back/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.5
+offset_top = -26.0
+offset_right = -43.5
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "BACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="back"]
+shape = SubResource("RectangleShape2D_h6umi")

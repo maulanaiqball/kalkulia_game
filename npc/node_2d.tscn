@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcm5u2m7ht3mk"]
+
+[ext_resource type="Script" uid="uid://bq5wsi7xnoi1d" path="res://npc/bpertanyaan_quiz.gd" id="1_jg1n7"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_jg1n7")

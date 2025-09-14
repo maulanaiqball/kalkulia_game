@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://2kg4hdouqp6t"
+path="res://.godot/imported/Open Chest (Minecraft)  Sound Effect - José García.mp3-d76c94bd5cb0933dc41e44fe6926afa3.mp3str"
+
+[deps]
+
+source_file="res://music_and_sounds/Open Chest (Minecraft)  Sound Effect - José García.mp3"
+dest_files=["res://.godot/imported/Open Chest (Minecraft)  Sound Effect - José García.mp3-d76c94bd5cb0933dc41e44fe6926afa3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,10 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://bth14i0usvwsd"]
+[gd_scene load_steps=25 format=3 uid="uid://bth14i0usvwsd"]
 
 [ext_resource type="Script" uid="uid://qmex7p80u81n" path="res://enemies/bat_enemy.gd" id="1_5gx0a"]
 [ext_resource type="Script" uid="uid://bjwsvosmyrqvp" path="res://stats.gd" id="2_erta8"]
 [ext_resource type="Texture2D" uid="uid://1aoe5e3ooxml" path="res://enemies/bat.png" id="3_ww8v4"]
 [ext_resource type="Script" uid="uid://bd2edxcfsqqt1" path="res://damage_boxes/hurtbox.gd" id="4_grp10"]
 [ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="4_ww8v4"]
+[ext_resource type="AudioStream" uid="uid://dqdw1qcxdbgoh" path="res://music_and_sounds/hurt.wav" id="6_boacx"]
 [ext_resource type="Script" uid="uid://pohlsv6qsc43" path="res://damage_boxes/hitbox.gd" id="6_ww8v4"]
 
 [sub_resource type="Resource" id="Resource_ww8v4"]
@@ -211,6 +212,9 @@ metadata/_custom_type_script = "uid://bd2edxcfsqqt1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -6)
 shape = SubResource("CircleShape2D_5gx0a")
+
+[node name="HurtSfx" type="AudioStreamPlayer2D" parent="Hurtbox"]
+stream = ExtResource("6_boacx")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 8

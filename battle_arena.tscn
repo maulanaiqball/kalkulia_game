@@ -1,12 +1,20 @@
-[gd_scene load_steps=10 format=4 uid="uid://cummntpikfrmc"]
+[gd_scene load_steps=23 format=4 uid="uid://cummntpikfrmc"]
 
 [ext_resource type="Texture2D" uid="uid://xub6u3s36me5" path="res://player/Player.png" id="1_1o8xg"]
 [ext_resource type="Script" uid="uid://b61gvhudkdgt8" path="res://battle_arena.gd" id="1_7p3g2"]
 [ext_resource type="Texture2D" uid="uid://kgpim4yk6ppj" path="res://world/grass_background.png" id="2_d7lnp"]
 [ext_resource type="TileSet" uid="uid://dk2cmv26yac3g" path="res://world/dirt_tileset.tres" id="3_wvkhc"]
-[ext_resource type="Texture2D" uid="uid://c4kldwllvl6os" path="res://enemies/slime3.png" id="4_a16jg"]
 [ext_resource type="TileSet" uid="uid://djcgnc0u1jb52" path="res://world/cliff_tileset.tres" id="4_roc78"]
 [ext_resource type="Script" uid="uid://ba47nxpter01f" path="res://batle/boss.gd" id="5_7p3g2"]
+[ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="5_wvkhc"]
+[ext_resource type="Texture2D" uid="uid://cltwujio6y7vd" path="res://npc/boss.png" id="7_d7lnp"]
+[ext_resource type="PackedScene" uid="uid://vhemwnvw3uk1" path="res://game_over_ui.tscn" id="8_wtxlm"]
+[ext_resource type="PackedScene" uid="uid://d1aggc7hmls1q" path="res://player/ui_health.tscn" id="9_roc78"]
+[ext_resource type="AudioStream" uid="uid://dqdw1qcxdbgoh" path="res://music_and_sounds/hurt.wav" id="10_0f5c1"]
+[ext_resource type="Texture2D" uid="uid://fr0gnf2f5itr" path="res://asset/winer.png" id="10_6nbgj"]
+[ext_resource type="Script" uid="uid://bukuolugc8srm" path="res://button_area.gd" id="11_0f5c1"]
+[ext_resource type="Texture2D" uid="uid://loddfuu3y6qw" path="res://asset/buttons.png" id="12_wtxlm"]
+[ext_resource type="AudioStream" uid="uid://dtxlrgengcr2e" path="res://music_and_sounds/yey_sound.mp3" id="15_4s8bh"]
 
 [sub_resource type="GDScript" id="GDScript_a16jg"]
 script/source = "# res://batle/player-batle.gd
@@ -16,6 +24,9 @@ extends CharacterBody2D
 var health: int = 3
 
 @onready var fire_point: Node2D = $fire_point
+@onready var hurt_sound: AudioStreamPlayer2D = $HurtSound   # node suara hurt
+
+@export var game_over_ui: Node
 
 func _ready():
 	add_to_group(\"player\")
@@ -25,10 +36,21 @@ func apply_damage(amount: int, source: String) -> void:
 	if source == \"player\":
 		return # abaikan peluru sendiri
 
+	# mainkan suara hurt
+	if hurt_sound:
+		hurt_sound.play()
+
 	health -= amount
 	print(\"Player kena hit! Sisa nyawa:\", health)
+
 	if health <= 0:
+		health = 0
 		print(\"Game Over! Player kalah\")
+		print(\"GameOverUI reference:\", game_over_ui)  # debug
+
+		if game_over_ui:
+			game_over_ui.show_game_over()
+
 		queue_free()
 
 # dipanggil dari quiz saat jawaban benar
@@ -48,6 +70,66 @@ func shoot(target: Node2D = null):
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8xg"]
 size = Vector2(20, 26)
+
+[sub_resource type="Animation" id="Animation_roc78"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_d7lnp"]
+resource_name = "attack"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_wvkhc"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 0, 1, 0, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ya8om"]
+_data = {
+&"RESET": SubResource("Animation_roc78"),
+&"attack": SubResource("Animation_d7lnp"),
+&"idle": SubResource("Animation_wvkhc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6nbgj"]
+size = Vector2(140, 20)
 
 [node name="BattleArena" type="Node2D"]
 script = ExtResource("1_7p3g2")
@@ -72,28 +154,50 @@ tile_set = ExtResource("3_wvkhc")
 tile_map_data = PackedByteArray("AAAAAAUAAAABAAMAAAAJAAUAAAABAAMAAAABAAUAAAABAAMAAAACAAUAAAABAAMAAAADAAUAAAABAAMAAAAEAAUAAAABAAMAAAAFAAUAAAABAAMAAAAGAAUAAAABAAMAAAAHAAUAAAABAAMAAAAIAAUAAAABAAMAAAD//wUAAAABAAMAAAD+/wUAAAABAAMAAAD9/wUAAAABAAMAAAD8/wUAAAAAAAMAAAD9/wIAAAABAAMAAAD+/wIAAAAHAAMAAAD+/wEAAAAEAAAAAAD//wEAAAABAAMAAAAAAAEAAAAHAAMAAAAAAAAAAAAEAAAAAAABAAAAAAABAAMAAAACAAAAAAABAAMAAAADAAAAAAAHAAMAAAADAP//AAAEAAAAAAAEAP//AAABAAMAAAAFAP//AAABAAMAAAAGAP//AAABAAMAAAAHAP//AAABAAMAAAAIAP//AAABAAMAAAAJAP//AAAHAAAAAAAJAAAAAAAEAAMAAAAKAAAAAAABAAMAAAALAAAAAAAHAAAAAAALAAEAAAADAAEAAAALAAIAAAAEAAMAAAAMAAIAAAAHAAAAAAAMAAMAAAADAAEAAAAMAAQAAAAHAAMAAAALAAQAAAABAAMAAAAKAAQAAAAEAAAAAAAKAAUAAAAHAAMAAAD8/wEAAAADAAEAAAD8/wAAAAADAAAAAAD8/wIAAAAEAAMAAAA=")
 tile_set = ExtResource("4_roc78")
 
-[node name="player" type="CharacterBody2D" parent="."]
-position = Vector2(47, 91)
+[node name="player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("game_over_ui")]
+position = Vector2(47, 96)
 script = SubResource("GDScript_a16jg")
+game_over_ui = NodePath("../GameOverUI")
+
+[node name="shadow" type="Sprite2D" parent="player"]
+position = Vector2(0, 12)
+texture = ExtResource("5_wvkhc")
 
 [node name="Sprite2D" type="Sprite2D" parent="player"]
 texture = ExtResource("1_1o8xg")
 hframes = 60
 
 [node name="fire_point" type="Marker2D" parent="player"]
-position = Vector2(14, 2)
+position = Vector2(16, 2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
-position = Vector2(0, 3)
+position = Vector2(-4, 2)
 shape = SubResource("RectangleShape2D_1o8xg")
+
+[node name="CanvasLayer" parent="player" instance=ExtResource("9_roc78")]
+
+[node name="UIHearts" parent="player/CanvasLayer" index="0"]
+offset_left = 15.0
+offset_top = 45.0
+offset_right = 55.0
+offset_bottom = 61.0
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="player"]
+stream = ExtResource("10_0f5c1")
+
+[node name="GameOverUI" parent="." instance=ExtResource("8_wtxlm")]
 
 [node name="boss" type="CharacterBody2D" parent="."]
 position = Vector2(247, 93)
 script = ExtResource("5_7p3g2")
 
+[node name="shadow" type="Sprite2D" parent="boss"]
+position = Vector2(1, 12)
+texture = ExtResource("5_wvkhc")
+
 [node name="Sprite2D" type="Sprite2D" parent="boss"]
-texture = ExtResource("4_a16jg")
-hframes = 5
+texture = ExtResource("7_d7lnp")
+hframes = 4
 
 [node name="fire_point" type="Marker2D" parent="boss"]
 position = Vector2(-16, 0)
@@ -102,24 +206,99 @@ position = Vector2(-16, 0)
 position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_1o8xg")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="boss"]
+libraries = {
+&"": SubResource("AnimationLibrary_ya8om")
+}
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="boss"]
+stream = ExtResource("10_0f5c1")
+
+[node name="WinnerPopup" type="CanvasLayer" parent="."]
+layer = 100
+visible = false
+
+[node name="Panel" type="Panel" parent="WinnerPopup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="TextureRect" parent="WinnerPopup/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -145.0
+offset_top = -90.0
+offset_right = 175.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_6nbgj")
+
+[node name="play" type="Area2D" parent="WinnerPopup/Panel"]
+visible = false
+z_index = 100
+position = Vector2(160, 136)
+script = ExtResource("11_0f5c1")
+target_scene = "uid://dapyke1q7uuet"
+
+[node name="Sprite2D" type="Sprite2D" parent="WinnerPopup/Panel/play"]
+texture = ExtResource("12_wtxlm")
+
+[node name="Label" type="Label" parent="WinnerPopup/Panel/play/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -46.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "START"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinnerPopup/Panel/play"]
+shape = SubResource("RectangleShape2D_6nbgj")
+
+[node name="WinSound" type="AudioStreamPlayer2D" parent="WinnerPopup"]
+stream = ExtResource("15_4s8bh")
+
 [node name="QuizUI" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="QuizUI"]
-offset_left = 113.0
-offset_right = 153.0
-offset_bottom = 40.0
+offset_top = 128.0
+offset_right = 320.0
+offset_bottom = 180.0
 
 [node name="QuestionLabel" type="Label" parent="QuizUI/Panel"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+theme_override_font_sizes/font_size = 12
 
 [node name="OptionsBox" type="HBoxContainer" parent="QuizUI/Panel"]
-layout_mode = 0
-offset_left = -113.0
-offset_top = 140.0
-offset_right = -73.0
-offset_bottom = 180.0
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.09913, 0.982085)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 91)
+
+[editable path="player/CanvasLayer"]
+[editable path="GameOverUI"]

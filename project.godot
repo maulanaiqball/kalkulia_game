@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="DISCALCULIA STEM"
-run/main_scene="uid://c6voj8psa80tg"
+run/main_scene="uid://dapyke1q7uuet"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,6 +22,10 @@ Inventory_Manager="*res://inventory/InventoryManager.tscn"
 NotificationUi="*res://ui/NotificationUI.tscn"
 GatePuzzleUi="*res://puzzle/GatePuzzleUI.tscn"
 QuizUi="*res://npc/quiz_ui.tscn"
+pertanyaan_quiz="*res://npc/node_2d.tscn"
+AudioManager="*res://audio_manager.gd"
+Global="*res://global.gd"
+VirtualControls="*res://virtual_controls.tscn"
 
 [display]
 
@@ -95,6 +99,10 @@ inventory={
 ]
 }
 
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
 [layer_names]
 
 2d_physics/layer_1="world"
@@ -106,3 +114,4 @@ inventory={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/vram_compression/import_etc2_astc=true

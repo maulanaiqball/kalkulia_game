@@ -67,7 +67,8 @@ func _build_options() -> void:
 	keys.shuffle()
 	for num in keys:
 		var btn := Button.new()
-		btn.text = str(num)               
+		btn.text = str(num)     
+		btn.add_theme_color_override("font_color", Color.BLACK)          
 		btn.custom_minimum_size = Vector2(32, 32)
 
 		var stylebox := StyleBoxTexture.new()

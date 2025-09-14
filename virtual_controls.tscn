@@ -1,0 +1,35 @@
+[gd_scene load_steps=9 format=3 uid="uid://t37w1d8yft52"]
+
+[ext_resource type="Script" uid="uid://bbusxmk682bbv" path="res://virtual_controls.gd" id="1_p2r5p"]
+[ext_resource type="Texture2D" uid="uid://beewv6prb8pih" path="res://asset/buttonA.png" id="2_ppfsp"]
+[ext_resource type="PackedScene" uid="uid://ddo47f38ulwyw" path="res://joystik/addons/joystick_addon/joystick.tscn" id="2_uvdba"]
+[ext_resource type="Texture2D" uid="uid://butfs7rk1tqch" path="res://asset/buttonB.png" id="3_w1qbc"]
+[ext_resource type="Texture2D" uid="uid://bpaf06m6vcaig" path="res://asset/buttonE.png" id="4_6645y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppfsp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w1qbc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6645y"]
+
+[node name="VirtualControls" type="CanvasLayer"]
+layer = 99
+script = ExtResource("1_p2r5p")
+
+[node name="AttackBtn" type="TouchScreenButton" parent="."]
+position = Vector2(272, 144)
+texture_normal = ExtResource("2_ppfsp")
+shape = SubResource("CircleShape2D_ppfsp")
+
+[node name="RollBtn" type="TouchScreenButton" parent="."]
+position = Vector2(232, 144)
+texture_normal = ExtResource("3_w1qbc")
+shape = SubResource("CircleShape2D_w1qbc")
+
+[node name="Interact" type="TouchScreenButton" parent="."]
+position = Vector2(272, 104)
+texture_normal = ExtResource("4_6645y")
+shape = SubResource("CircleShape2D_6645y")
+
+[node name="Joystick" parent="." instance=ExtResource("2_uvdba")]
+position = Vector2(48, 144)

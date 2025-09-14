@@ -4,7 +4,11 @@ signal quiz_finished(npc: Node)
 @onready var panel: Panel = $Panel
 @onready var question_label: Label = $Panel/VBoxContainer2/QuestionLabel
 @onready var options_box: VBoxContainer = $Panel/VBoxContainer2/Options
-@onready var feedback_label: Label = $Panel/VBoxContainer2/FeedbackLabel
+@onready var feedback_label: Label = $Panel/FeedbackLabel
+
+# Dua AudioStreamPlayer terpisah
+@onready var correct_sfx: AudioStreamPlayer = $CorrectSfx
+@onready var wrong_sfx: AudioStreamPlayer = $WrongSfx
 
 var _queue: Array = []
 var _current: Dictionary = {}
@@ -31,12 +35,12 @@ func open(questions: Array, npc: Node) -> void:
 	panel.grab_focus()
 
 func _build_next_question() -> void:
+	# Hapus semua pilihan lama
 	for c in options_box.get_children():
 		c.queue_free()
 
 	if _queue.is_empty():
 		_is_running = false
-		feedback_label.text = "Selesai! Semua benar 🎉"
 		emit_signal("quiz_finished", _npc_ref)
 		await get_tree().create_timer(0.8).timeout
 		_on_close_pressed()
@@ -54,17 +58,27 @@ func _build_next_question() -> void:
 		b.text = str(choices[i])
 		b.custom_minimum_size = Vector2(200, 32)
 
-		# Set stylebox texture
+		# kasih warna teks gelap (hitam)
+		b.add_theme_color_override("font_color", Color.BLACK)
+
+		# styling tombol
+		var sb := StyleBoxTexture.new()
+		sb.texture = load("res://drop_item/drop_item.png")
+		b.add_theme_stylebox_override("normal", sb)
+		b.add_theme_stylebox_override("hover", sb)
+		b.add_theme_stylebox_override("pressed", sb)
+
+		# hubungkan event tombol
+		b.pressed.connect(_on_choice_pressed.bind(i))
+		options_box.add_child(b)
+
+
+		# Style tombol
 		var stylebox := StyleBoxTexture.new()
 		stylebox.texture = load("res://drop_item/drop_item.png")
 		b.add_theme_stylebox_override("normal", stylebox)
 		b.add_theme_stylebox_override("hover", stylebox)
 		b.add_theme_stylebox_override("pressed", stylebox)
-
-		b.pressed.connect(_on_choice_pressed.bind(i))
-		options_box.add_child(b)
-
-
 
 func _on_choice_pressed(choice_idx: int) -> void:
 	if _choice_lock: return
@@ -72,14 +86,18 @@ func _on_choice_pressed(choice_idx: int) -> void:
 
 	var correct_idx: int = int(_current.get("correct", -1))
 	if choice_idx == correct_idx:
-		NotificationUi.show_message("Benar!")
+		# Jawaban benar
+		if correct_sfx.stream:
+			correct_sfx.play()
 		feedback_label.text = "Benar ✓"
 		await get_tree().create_timer(0.7).timeout
 		_build_next_question()
 	else:
+		# Jawaban salah
+		if wrong_sfx.stream:
+			wrong_sfx.play()
 		_queue.append(_current)
-		NotificationUi.show_message("Salah! Pertanyaan akan diulang.")
-		feedback_label.text = "Salah ✗ (diulang nanti)"
+		feedback_label.text = "Salah! Pertanyaan akan diulang"
 		await get_tree().create_timer(0.7).timeout
 		_build_next_question()
 

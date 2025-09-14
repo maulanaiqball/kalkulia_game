@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://s68n46idf6li"
+path="res://.godot/imported/Sugar Cookie.mp3-9b3713cceb63b2bd774cf6dfacbd012e.mp3str"
+
+[deps]
+
+source_file="res://music_and_sounds/Sugar Cookie.mp3"
+dest_files=["res://.godot/imported/Sugar Cookie.mp3-9b3713cceb63b2bd774cf6dfacbd012e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

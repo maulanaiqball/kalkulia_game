@@ -1,0 +1,117 @@
+[gd_scene load_steps=5 format=3 uid="uid://dapyke1q7uuet"]
+
+[ext_resource type="Script" uid="uid://bukuolugc8srm" path="res://button_area.gd" id="1_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://dd27awkp0sqgc" path="res://asset/background homes.png" id="1_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://loddfuu3y6qw" path="res://asset/buttons.png" id="3_jix8l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fu7sn"]
+size = Vector2(140, 20)
+
+[node name="main_menu" type="CanvasLayer"]
+layer = 100
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_fu7sn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 45.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="play" type="Area2D" parent="VBoxContainer"]
+position = Vector2(0, -30)
+script = ExtResource("1_7vrkn")
+target_scene = "uid://c6voj8psa80tg"
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/play"]
+texture = ExtResource("3_jix8l")
+
+[node name="Label" type="Label" parent="VBoxContainer/play/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -46.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "START"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/play"]
+shape = SubResource("RectangleShape2D_fu7sn")
+
+[node name="options" type="Area2D" parent="VBoxContainer"]
+position = Vector2(0, -2)
+script = ExtResource("1_7vrkn")
+target_scene = "uid://do1g8343fi00j"
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/options"]
+texture = ExtResource("3_jix8l")
+
+[node name="Label" type="Label" parent="VBoxContainer/options/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.5
+offset_top = -26.0
+offset_right = -43.5
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "OPTIONS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/options"]
+shape = SubResource("RectangleShape2D_fu7sn")
+
+[node name="about" type="Area2D" parent="VBoxContainer"]
+position = Vector2(0, 26)
+script = ExtResource("1_7vrkn")
+target_scene = "uid://duw58tc8qnguc"
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/about"]
+texture = ExtResource("3_jix8l")
+
+[node name="Label" type="Label" parent="VBoxContainer/about/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -46.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "ABOUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/about"]
+shape = SubResource("RectangleShape2D_fu7sn")

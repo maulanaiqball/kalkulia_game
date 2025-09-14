@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://blllaffdwbqvd"]
+
+[ext_resource type="Script" uid="uid://clbm4gyu1orj6" path="res://addons/joystick_addon/touch_controls.gd" id="1_asmpo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_poon4"]
+
+[node name="TouchControls" type="CanvasLayer"]
+layer = 2
+
+[node name="Touch" type="Node2D" parent="."]
+script = ExtResource("1_asmpo")
+
+[node name="JoystickSpawner" type="TouchScreenButton" parent="Touch"]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_poon4")
+
+[connection signal="pressed" from="Touch/JoystickSpawner" to="Touch" method="_on_joystick_spawner_pressed"]
+[connection signal="released" from="Touch/JoystickSpawner" to="Touch" method="_on_joystick_spawner_released"]

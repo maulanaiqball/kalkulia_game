@@ -8,27 +8,119 @@ extends Node2D
 # daftar pertanyaan
 var questions: Array = [
 	{
-		"question": "2 + 2 = ?", 
-		"choices": ["3", "4", "5"], 
+		"question": "🍎🍎\nBerapa jumlah apel di atas?",
+		"choices": ["1", "2", "3"],
 		"answer": 1
 	},
 	{
-		"question": "5 + 5 = ?", 
-		"choices": ["1", "2", "10"], 
+		"question": "Yang mana 4 buah jeruk?",
+		"choices": ["🍊🍊", "🍊🍊🍊🍊", "🍊🍊🍊"],
+		"answer": 1
+	},
+	{
+		"question": "Ada 3 bintang ⭐⭐⭐\nBerapa jumlah bintang?",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "Angka berapa setelah 8?",
+		"choices": ["7", "8", "9"],
 		"answer": 2
 	},
 	{
-		"question": "5 + 6 = ?", 
-		"choices": ["1", "11", "10"], 
+		"question": "Pilih gambar yang jumlahnya 2 🐶",
+		"choices": ["🐶", "🐶🐶", "🐶🐶🐶"],
+		"answer": 1
+	},
+	{
+		"question": "1 + 3 = ?",
+		"choices": ["3", "4", "5"],
+		"answer": 1
+	},
+	{
+		"question": "5 - 2 = ?",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "2 + 6 = ?",
+		"choices": ["7", "8", "9"],
+		"answer": 2
+	},
+	{
+		"question": "4 - 1 = ?",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "3 + 5 = ?",
+		"choices": ["7", "8", "9"],
+		"answer": 1
+	},
+	{
+		"question": "Lengkapi urutan: 1, 2, __, 4, 5",
+		"choices": ["2", "3", "6"],
+		"answer": 1
+	},
+	{
+		"question": "Polanya: 🔺⚫🔺⚫ …\nGambar selanjutnya?",
+		"choices": ["🔺", "⚫", "🔵"],
+		"answer": 0
+	},
+	{
+		"question": "Mana angka yang lebih besar?",
+		"choices": ["5", "9", "7"],
+		"answer": 1
+	},
+	{
+		"question": "Urutan angka: 6, 7, __, 9",
+		"choices": ["8", "7", "10"],
+		"answer": 0
+	},
+	{
+		"question": "Mana yang lebih kecil?",
+		"choices": ["4", "6", "9"],
+		"answer": 0
+	},
+	{
+		"question": "Seret 3 apel 🍎🍎🍎 ke keranjang dengan angka 3",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "Cocokkan angka 5 dengan gambar berikut",
+		"choices": ["🍌🍌🍌", "🍌🍌🍌🍌🍌", "🍌🍌🍌🍌"], 
+		"answer": 1
+	},
+	{
+		"question": "Tambahkan 2 bola ⚽ ke kotak yang sudah ada 1 bola ⚽. Total bola?",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "Hapus 1 dari 4 balon 🎈🎈🎈🎈. Sisa balon?",
+		"choices": ["2", "3", "4"],
+		"answer": 1
+	},
+	{
+		"question": "Pilih angka yang menunjukkan jumlah bintang ⭐⭐⭐⭐",
+		"choices": ["3", "4", "5"],
 		"answer": 1
 	}
 ]
+
 
 var current_index: int = 0
 
 func _ready() -> void:
 	quiz_ui.visible = false
 	show_quiz()
+
+	# Sembunyikan VirtualControls
+	var vc = get_node_or_null("/root/VirtualControls")
+	if vc:
+		vc.visible = false
+
 
 func show_quiz() -> void:
 	quiz_ui.visible = true

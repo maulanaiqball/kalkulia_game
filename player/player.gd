@@ -12,10 +12,14 @@ var last_input_vector: = Vector2.DOWN
 @onready var playback = animation_tree.get("parameters/StateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var blink_animation_player: AnimationPlayer = $BlinkAnimationPlayer
+@onready var ui_hearts: UIHearts = $"../CanvasLayer/UIHearts"
 
 func _ready() -> void:
+	stats.health = Global.max_health
 	hurtbox.hurt.connect(take_hit.call_deferred)
 	stats.no_health.connect(die)
+	ui_hearts.stats = stats
+
 
 func _physics_process(delta: float) -> void:
 	var state = playback.get_current_node()
@@ -24,11 +28,19 @@ func _physics_process(delta: float) -> void:
 		"AttackState": pass
 		"RollState": roll_state(delta)
 
+@export var game_over_ui: Node
+
+
 func die() -> void:
 	hide()
 	remove_from_group("player")
 	process_mode = Node.PROCESS_MODE_DISABLED
+	
+	print("GameOverUI reference:", game_over_ui)  # debug
+	game_over_ui.show_game_over()
 
+
+	
 func take_hit(other_hitbox: Hitbox) -> void:
 	stats.health -= other_hitbox.damage
 	blink_animation_player.play("blink")

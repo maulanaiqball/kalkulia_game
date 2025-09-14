@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bw6t12lcnjd2u"]
+[gd_scene load_steps=13 format=3 uid="uid://bw6t12lcnjd2u"]
 
 [ext_resource type="Texture2D" uid="uid://d0u4at5nhonul" path="res://asset/chest.png" id="1_2wuah"]
 [ext_resource type="Script" uid="uid://ctklutnio7uqn" path="res://asset/chest.gd" id="1_uf5rl"]
 [ext_resource type="PackedScene" uid="uid://blnqe5t0f2jtn" path="res://interaction/interaction_area.tscn" id="2_abka0"]
 [ext_resource type="Texture2D" uid="uid://bo7vovmopeg6k" path="res://shadows/medium_shadow.png" id="2_fvqhk"]
+[ext_resource type="AudioStream" uid="uid://2kg4hdouqp6t" path="res://music_and_sounds/Open Chest (Minecraft)  Sound Effect - José García.mp3" id="4_4402x"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uf5rl"]
 radius = 2.0
@@ -40,6 +41,21 @@ tracks/0/keys = {
 "update": 1,
 "values": [0, 1, 2, 3]
 }
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer2D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.4235,
+"stream": ExtResource("4_4402x")
+}],
+"times": PackedFloat32Array(0.1)
+}
+tracks/1/use_blend = true
 
 [sub_resource type="Animation" id="Animation_4402x"]
 resource_name = "chest_close"
@@ -120,3 +136,5 @@ visible = false
 offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 23.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

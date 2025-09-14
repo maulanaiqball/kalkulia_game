@@ -42,3 +42,13 @@ func _input(event):
 			await active_area[0].interact.call()
 			
 			can_interact = true
+
+func handle_interact():
+	print("[DEBUG] InteractionManager.handle_interact() dipanggil")
+	if active_area.size() > 0 and can_interact:
+		can_interact = false
+		lable.hide()
+
+		await active_area[0].interact.call()
+
+		can_interact = true

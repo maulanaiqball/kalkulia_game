@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://do1g8343fi00j"]
+
+[ext_resource type="Script" uid="uid://brxrwv1xoeyxe" path="res://options.gd" id="1_5v8ap"]
+[ext_resource type="Texture2D" uid="uid://loddfuu3y6qw" path="res://asset/buttons.png" id="2_se8ut"]
+[ext_resource type="Script" uid="uid://bukuolugc8srm" path="res://button_area.gd" id="3_ao2gm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ao2gm"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_07a1d"]
+size = Vector2(140, 20)
+
+[node name="options" type="Control"]
+top_level = true
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_5v8ap")
+
+[node name="button" type="Area2D" parent="."]
+position = Vector2(166, 81)
+
+[node name="Sprite2D" type="Sprite2D" parent="button"]
+texture = ExtResource("2_se8ut")
+
+[node name="Label" type="Label" parent="button/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.5
+offset_top = -26.0
+offset_right = -43.5
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="button"]
+shape = SubResource("RectangleShape2D_ao2gm")
+
+[node name="back" type="Area2D" parent="."]
+position = Vector2(166, 116)
+script = ExtResource("3_ao2gm")
+target_scene = "uid://dapyke1q7uuet"
+
+[node name="Sprite2D" type="Sprite2D" parent="back"]
+texture = ExtResource("2_se8ut")
+
+[node name="Label" type="Label" parent="back/Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.5
+offset_top = -26.0
+offset_right = -43.5
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14902, 0.0980392, 0.0196078, 1)
+theme_override_font_sizes/font_size = 12
+text = "BACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="back"]
+shape = SubResource("RectangleShape2D_07a1d")
